@@ -21,7 +21,7 @@ class SemanticVersionPluginTest extends Specification {
     def 'plugin loads version and transforms the version'() {
         setup:
         project.version = '1.2.3'
-        final expectedVersion = DefaultSemanticVersionParser.instance.parse("1.2.3", null)
+        def expectedVersion = DefaultSemanticVersionParser.instance.parse("1.2.3", null)
         final expectedSnapshotVersion = DefaultSemanticVersionParser.instance.parse("1.2.4-SNAPSHOT", null)
 
         when:

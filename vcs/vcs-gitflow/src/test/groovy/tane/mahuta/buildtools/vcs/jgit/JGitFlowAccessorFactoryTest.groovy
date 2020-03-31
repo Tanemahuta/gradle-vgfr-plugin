@@ -30,7 +30,7 @@ class JGitFlowAccessorFactoryTest extends Specification {
         when:
         Git.init().setDirectory(temporaryFolder.root).call()
         and:
-        final factored = factory.create(subdir)
+        def factored = factory.create(subdir)
         then:
         factored != null
         and:

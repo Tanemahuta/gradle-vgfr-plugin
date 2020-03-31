@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 public class ProjectBuilderTestRule extends TemporaryFolder {
 
-    private ProjectBuilder projectBuilder = new ProjectBuilder();
+    private ProjectBuilder projectBuilder = ProjectBuilder.builder();
     private Project project;
 
     @Getter

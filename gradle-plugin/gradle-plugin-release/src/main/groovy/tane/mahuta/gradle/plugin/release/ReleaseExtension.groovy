@@ -1,6 +1,7 @@
 package tane.mahuta.gradle.plugin.release
 
 import groovy.transform.CompileStatic
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.PublishArtifact
 import org.gradle.api.internal.project.ProjectInternal
 import tane.mahuta.buildtools.apilyzer.ApiCompatibilityReportBuilder
@@ -129,7 +130,7 @@ class ReleaseExtension {
     @Nonnull
     private Set<ArtifactRelease> factorArtifactReleases() {
         (project.configurations
-                .collect { it.artifacts }
+                .collect { Configuration config ->  config.artifacts }
                 .flatten() as Collection<PublishArtifact>)
                 .collect {
             GradleDomainObjectAdapter.instance.createArtifactRelease(project, it)

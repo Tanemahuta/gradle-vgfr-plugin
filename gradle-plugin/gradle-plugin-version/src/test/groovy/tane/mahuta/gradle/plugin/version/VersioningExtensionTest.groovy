@@ -3,6 +3,7 @@ package tane.mahuta.gradle.plugin.version
 import org.gradle.api.Project
 import spock.lang.Specification
 import spock.lang.Subject
+import tane.mahuta.buildtools.semver.branch.DefaultSemanticBranchVersion
 import tane.mahuta.buildtools.version.VersionParser
 
 /**
@@ -70,6 +71,24 @@ class VersioningExtensionTest extends Specification {
         1 * parserMock.parse('1.2.5', projectMock.getProjectDir()) >> '1.2.6'
         and:
         1 * projectMock.setVersion('1.2.6')
+    }
+
+    def 'reparsing a semantic version does not use the branch qualifier'() {
+        setup:
+        final version = new DefaultSemanticBranchVersion(1, 2, 3, { -> "X" }, "Y")
+        final parserMock = Mock(VersionParser)
+        extension.parserClosure = parserMock.&parse
+
+        when:
+        extension.version = version
+        then:
+        1 * projectMock.setVersion(version)
+        and:
+        1 * projectMock.getVersion() >> version
+        and:
+        1 * parserMock.parse('1.2.3-Y', projectMock.getProjectDir()) >> version
+        and:
+        1 * projectMock.setVersion(version)
     }
 
 }

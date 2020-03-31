@@ -5,7 +5,10 @@ import org.gradle.StartParameter
 import org.gradle.api.internal.BuildDefinition
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.initialization.NestedBuildFactory
+import org.gradle.internal.Actions
 import org.gradle.internal.build.BuildStateRegistry
+import org.gradle.internal.build.DefaultPublicBuildPath
+import org.gradle.plugin.management.internal.PluginRequests
 import tane.mahuta.buildtools.release.BuildToolAdapter
 import tane.mahuta.gradle.plugin.version.VersioningExtension
 
@@ -39,16 +42,22 @@ class GradleBuildAdapter implements BuildToolAdapter {
     boolean buildRelease() {
         final releaseExtension = project.extensions.findByType(ReleaseExtension)
         final tasks = (releaseExtension.releaseTasks ?: ['check', 'uploadArchives']) as LinkedHashSet
-        final buildFactory = project.services.get(NestedBuildFactory)
-        final buildStateRegistry = project.services.get(BuildStateRegistry)
-        final startParameter = project.services.get(StartParameter.class).newBuild()
+        final buildFactory = project.services.get(NestedBuildFactory) as NestedBuildFactory
+        final buildStateRegistry = project.services.get(BuildStateRegistry) as BuildStateRegistry
+        final startParameter = (project.services.get(StartParameter.class) as StartParameter).newBuild()
 
         startParameter.setCurrentDir(project.projectDir)
         startParameter.setProjectDir(project.projectDir)
         startParameter.setTaskNames(tasks)
 
-        final buildDefinition = BuildDefinition.fromStartParameterForBuild(startParameter, "release-build", project.projectDir)
-        final nestedBuild = buildStateRegistry.addImplicitBuild(buildDefinition, buildFactory)
+        final buildDefinition = BuildDefinition.fromStartParameterForBuild(
+                startParameter, "release-build",
+                project.projectDir,
+                PluginRequests.EMPTY,
+                Actions.doNothing(),
+                new DefaultPublicBuildPath(project.projectPath)
+        )
+        final nestedBuild = buildStateRegistry.addImplicitIncludedBuild(buildDefinition)
         nestedBuild.execute(tasks, null)
     }
 }

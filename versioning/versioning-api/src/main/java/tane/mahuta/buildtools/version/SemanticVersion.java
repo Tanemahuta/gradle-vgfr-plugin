@@ -33,4 +33,8 @@ public interface SemanticVersion extends Comparable<SemanticVersion> {
      */
     boolean isSnapshot();
 
+    /**
+     * @return the full version with qualifier
+     */
+    String getParseableString();
 }

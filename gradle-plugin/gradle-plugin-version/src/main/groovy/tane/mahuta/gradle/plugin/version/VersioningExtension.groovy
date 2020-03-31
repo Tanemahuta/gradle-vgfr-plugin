@@ -6,6 +6,7 @@ import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.FromString
 import org.gradle.api.Project
 import tane.mahuta.buildtools.apilyzer.ApiCompatibilityReport
+import tane.mahuta.buildtools.version.SemanticVersion
 import tane.mahuta.buildtools.version.VersionParser
 import tane.mahuta.buildtools.version.VersionStorage
 
@@ -149,7 +150,8 @@ class VersioningExtension {
     }
 
     private void reparse() {
-        final source = this.versionAccessor.get() as String
+        final sourceObj = this.versionAccessor.get()
+        final source = sourceObj instanceof SemanticVersion ? (sourceObj as SemanticVersion).parseableString : sourceObj as String
         if (this.parser != null && source != null) {
             this.versionAccessor.set(parser.parse(source, this.sourceDirectory))
         }

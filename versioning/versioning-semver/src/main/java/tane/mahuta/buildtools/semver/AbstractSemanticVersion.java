@@ -17,7 +17,7 @@ import java.util.function.Function;
  * Abstract implementation for {@link SemanticVersion}.
  *
  * @author christian.heike@icloud.com
- *         Created on 11.06.17.
+ * Created on 11.06.17.
  */
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -95,4 +95,8 @@ public abstract class AbstractSemanticVersion implements SemanticVersion {
         return sb.toString();
     }
 
+    @Override
+    public String getParseableString() {
+        return createStringRepresentation(major, minor, micro, getQualifier());
+    }
 }

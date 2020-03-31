@@ -39,7 +39,7 @@ class SemanticBranchVersionPluginTest extends Specification {
         }
         project.version = version
         final semanticVersion = DefaultSemanticVersionParser.instance.parse(version, root)
-        final expectedVersion = new DefaultSemanticBranchVersion(semanticVersion.major, semanticVersion.minor, semanticVersion.micro, {
+        def expectedVersion = new DefaultSemanticBranchVersion(semanticVersion.major, semanticVersion.minor, semanticVersion.micro, {
             -> branchQualifier
         }, semanticVersion.qualifier)
 
