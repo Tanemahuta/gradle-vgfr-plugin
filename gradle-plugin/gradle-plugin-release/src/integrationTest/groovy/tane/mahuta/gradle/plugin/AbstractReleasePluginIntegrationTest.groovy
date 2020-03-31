@@ -83,19 +83,19 @@ build
     }
 
     boolean hasLocalTag(final String name) {
-        git.repository.getRef("refs/tags/${name}") != null
+        git.repository.findRef("refs/tags/${name}") != null
     }
 
     boolean hasRemoteTag(final String name) {
-        remoteGit.repository.getRef("refs/tags/${name}") != null
+        remoteGit.repository.findRef("refs/tags/${name}") != null
     }
 
     boolean hasLocalBranch(final String name) {
-        git.repository.getRef("refs/heads/${name}") != null
+        git.repository.findRef("refs/heads/${name}") != null
     }
 
     boolean hasRemoteBranch(final String name) {
-        remoteGit.repository.getRef("refs/heads/${name}") != null
+        remoteGit.repository.findRef("refs/heads/${name}") != null
     }
 
     boolean repositoryContains(final String group, final String name, final String version) {

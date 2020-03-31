@@ -36,31 +36,32 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    apply plugin: 'com.jfrog.bintray'
+    subprojects {
+        apply plugin: 'com.jfrog.bintray'
 
-    bintray {
-        user = System.getenv("BINTRAY_USER")
-        key = System.getenv("BINTRAY_KEY")
-        configurations = ['archives']
-        pkg {
-            repo = 'gradle-plugins'
-            name = 'gradle-vgfr-plugin'
-            userOrg = System.getenv("BINTRAY_USER")
-            licenses = ['Apache-2.0']
-            githubRepo = 'Tanemahuta/gradle-vgfr-plugin/'
-            //githubReleaseNotesFile = 'README.md'
-            vcsUrl = 'https://github.com/Tanemahuta/gradle-vgfr-plugin.git'
-            version {
-                name = project.version as String
-                released = new Date()
-                if (!(project.version as String).endsWith("-SNAPSHOT")) {
-                    vcsTag = "${project.version}"
+        bintray {
+            user = System.getenv("BINTRAY_USER")
+            key = System.getenv("BINTRAY_KEY")
+            configurations = ['archives']
+            pkg {
+                repo = 'gradle-plugins'
+                name = 'gradle-vgfr-plugin'
+                userOrg = System.getenv("BINTRAY_USER")
+                licenses = ['Apache-2.0']
+                githubRepo = 'Tanemahuta/gradle-vgfr-plugin/'
+                //githubReleaseNotesFile = 'README.md'
+                vcsUrl = 'https://github.com/Tanemahuta/gradle-vgfr-plugin.git'
+                version {
+                    name = project.version as String
+                    released = new Date()
+                    if (!(project.version as String).endsWith("-SNAPSHOT")) {
+                        vcsTag = "${project.version}"
+                    }
                 }
             }
+            publish = true
         }
-        publish = true
+        tasks.bintrayUpload.onlyIf { !(project.version as String).endsWith("-SNAPSHOT") }
     }
-
-    tasks.bintrayUpload.onlyIf { !(project.version as String).endsWith("-SNAPSHOT") }
 
 }
