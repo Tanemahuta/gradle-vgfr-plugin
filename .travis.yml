@@ -13,7 +13,7 @@ script:
   - ./gradlew assemble check bintrayUpload --stacktrace -Pgradle.publish.secret=${GRADLE_PUBLISH_SECRET}
 
 jdk:
-- oraclejdk8
+- openjdk8
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 notifications:
