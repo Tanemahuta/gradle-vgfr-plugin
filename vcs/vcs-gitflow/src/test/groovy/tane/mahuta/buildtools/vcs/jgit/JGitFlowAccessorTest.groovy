@@ -115,8 +115,8 @@ class JGitFlowAccessorTest extends Specification {
 
         then:
         accessor.branch == expectedFinishBranch
-        jGitFlow.git().repository.getRef("refs/heads/${expectedReleaseBranch}") == null
-        remote.repository.getRef("refs/heads/${expectedReleaseBranch}") == null
+        jGitFlow.git().repository.findRef("refs/heads/${expectedReleaseBranch}") == null
+        remote.repository.findRef("refs/heads/${expectedReleaseBranch}") == null
         and:
         isMerged(head)
 
@@ -175,7 +175,7 @@ class JGitFlowAccessorTest extends Specification {
         accessor.pushTags()
 
         then:
-        remote.repository.getRef("refs/tags/xy") != null
+        remote.repository.findRef("refs/tags/xy") != null
     }
 
     private boolean isMerged(final String commitId) {
@@ -187,7 +187,7 @@ class JGitFlowAccessorTest extends Specification {
             final questionableCommit = revWalk.parseCommit(repo.resolve(commitId))
             return revWalk.isMergedInto(questionableCommit, currentCommit)
         } finally {
-            revWalk?.release()
+            revWalk?.close()
         }
     }
 

@@ -51,7 +51,8 @@ public class JGitFlowAccessor implements VcsAccessor {
     @Override
     @Nullable
     public String getBranch() {
-        return Stream.of("BRANCH_NAME", "GIT_BRANCH").map(System::getenv)
+        return Stream.of("BRANCH_NAME", "GIT_BRANCH", "CI_COMMIT_REF_NAME")
+                .map(System::getenv)
                 .filter(Objects::nonNull).findFirst().orElseGet(this::getRepositoryBranch);
     }
 

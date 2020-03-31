@@ -3,5 +3,11 @@ apply from: rootProject.file('buildscripts/javaSpockProject.gradle')
 
 dependencies {
     compile project(':vcs:vcs-api')
-    compile 'external.atlassian.jgitflow:jgit-flow-core:1.0-m5.1'
+    compile('org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r') {
+        exclude group: 'com.jcraft', module: 'jsch'
+    }
+    compile 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.jsch:0.1.55_1'
+    compile 'com.google.guava:guava:14.0.1'
+    compile 'org.slf4j:slf4j-api:1.7.30'
+    testCompile 'commons-io:commons-io:2.4'
 }
